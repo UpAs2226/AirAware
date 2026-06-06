@@ -1,3 +1,4 @@
+const path = require("path");
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -29,6 +30,14 @@ app.use('/api/ai', aiRoutes);
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', message: 'AirAware API is running' });
 });
+
+// Serve React/Vite build
+app.use(express.static(path.join(__dirname, "../frontend/dist")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../frontend/dist/index.html"));
+});
+
 
 // Error handler
 app.use((err, req, res, next) => {
